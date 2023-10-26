@@ -369,6 +369,11 @@ def validate_config(cfg):
             "If you want to full finetune, please turn off load_in_8bit and load_in_4bit."
         )
 
+    if cfg.test_datasets and cfg.val_set_size:
+        raise ValueError(
+            "non-zero val_set_size should not be used with test_datasets configuration"
+        )
+
     # TODO
     # MPT 7b
     # https://github.com/facebookresearch/bitsandbytes/issues/25
