@@ -251,10 +251,10 @@ def load_tokenized_prepared_datasets(
                 raise ValueError("unhandled dataset load")
             # support for using a subset of the data
             if config_dataset.shards:
-                shard_split = d.split if d.split else split
+                shard_split = config_dataset.split if config_dataset.split else split
                 if shard_split in ds:
                     ds = ds.shuffle(seed=seed)[shard_split].shard(
-                        num_shards=d.shards, index=0
+                        num_shards=config_dataset.shards, index=0
                     )
                 else:
                     ds = ds.shuffle(seed=seed).shard(
@@ -268,13 +268,13 @@ def load_tokenized_prepared_datasets(
                 d_base_type = d_type_split[0]
                 d_prompt_style = d_type_split[1] if len(d_type_split) > 1 else None
 
-            if d.split and d.split in ds:
-                ds = ds[d.split]
+            if config_dataset.split and config_dataset.split in ds:
+                ds = ds[config_dataset.split]
             elif split in ds:
                 ds = ds[split]
             elif isinstance(ds, DatasetDict):
                 raise ValueError(
-                    f"no {split} split found for dataset {d.path}, you may specify a split with 'split: ...`"
+                    f"no {split} split found for dataset {config_dataset.path}, you may specify a split with 'split: ...`"
                 )
 
             dataset_wrapper, dataset_prompter = get_dataset_wrapper(
