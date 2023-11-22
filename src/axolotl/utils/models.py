@@ -536,7 +536,7 @@ def load_lora(model, cfg, inference=False):
             model,
             cfg.lora_model_dir,
             is_trainable=(not inference),
-            offload_folder=""
+            offload_folder=cfg.offload_folder
         )
     else:
         model = get_peft_model(model, lora_config)
