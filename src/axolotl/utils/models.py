@@ -66,10 +66,10 @@ def load_tokenizer(cfg):
     if (
         tokenizer.__class__.__name__
         in [
-            "LlamaTokenizer",
-            "LlamaTokenizerFast",
-            "CodeLlamaTokenizer",
-        ]
+        "LlamaTokenizer",
+        "LlamaTokenizerFast",
+        "CodeLlamaTokenizer",
+    ]
         and hasattr(tokenizer, "pad_token")
         and not tokenizer.pad_token
     ):
@@ -427,7 +427,8 @@ def load_model(
     if cfg.ddp and not load_in_8bit:
         model.to(f"cuda:{cfg.local_rank}")
 
-    if torch.cuda.device_count() > 1 and int(os.getenv("WORLD_SIZE", "1")) == 1:
+    if (torch.cuda.device_count() > 1 and (int(os.getenv("WORLD_SIZE", "1")) == 1)) \
+            or cfg.force_model_parallel:
         setattr(model, "is_parallelizable", True)
         setattr(model, "model_parallel", True)
 
