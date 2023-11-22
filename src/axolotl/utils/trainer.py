@@ -204,6 +204,7 @@ def calculate_total_num_steps(cfg, train_dataset, update=True):
                     .apply(lambda x: x[-1] + 1)
                     .values
                 ),
+                force_model_parallel=cfg.force_model_parallel
             )
 
             data_loader = DataLoader(

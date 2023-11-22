@@ -115,12 +115,14 @@ class MultipackBatchSampler(BatchSampler):
         batch_max_len: int,
         lengths: np.ndarray,
         packing_efficiency_estimate: float = 1.0,
+        force_model_parallel=False
     ):
         super().__init__(sampler, batch_size, drop_last)
         self.batch_size = None
         self.batch_max_len = batch_max_len
         self.lengths: np.ndarray = lengths
         self.packing_efficiency_estimate = packing_efficiency_estimate or 1.0
+        self.force_model_parallel = force_model_parallel
 
         assert isinstance(self.lengths, np.ndarray)
 
@@ -173,6 +175,12 @@ class MultipackBatchSampler(BatchSampler):
 
     def _len_est(self):
         world_size = int(os.getenv("WORLD_SIZE", "1"))
+
+        # When using model parallel, all devices process all samples,
+        # so force world_size to 1 for sake of computation.
+        if self.force_model_parallel:
+            world_size = 1
+
         lengths_sum = np.sum(self.lengths)
         lengths_sum_per_device = lengths_sum // world_size
         LOG.info(

@@ -105,6 +105,10 @@ class AxolotlTrainingArguments(TrainingArguments):
         default=None,
         metadata={"help": "prefetch_factor argument to the dataloader"},
     )
+    force_model_parallel: Optional[bool] = field(
+        default=False,
+        metadata={"help": "when true, forces the use of model parallelization across all available gpus"},
+    )
 
 
 class AxolotlTrainer(Trainer):
@@ -161,6 +165,7 @@ class AxolotlTrainer(Trainer):
                     .values
                 ),
                 packing_efficiency_estimate=self.args.sample_packing_efficiency,
+                force_model_parallel=self.args.force_model_parallel
             )
         return super()._get_train_sampler()
 
@@ -180,6 +185,7 @@ class AxolotlTrainer(Trainer):
                     .values
                 ),
                 packing_efficiency_estimate=self.args.sample_packing_efficiency,
+                force_model_parallel=self.args.force_model_parallel
             )
         return super()._get_eval_sampler(eval_dataset)
 
@@ -736,6 +742,7 @@ class HFCausalTrainerBuilder(TrainerBuilderBase):
             ),
             callbacks=self.get_callbacks(),
             num_epochs=self.cfg.num_epochs,
+            force_model_parallel=self.cfg.force_model_parallel,
             **trainer_kwargs,
         )
         trainer = self.hook_post_create_trainer(trainer)
