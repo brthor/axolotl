@@ -42,7 +42,7 @@ def choose_device(cfg):
         cfg.device_map = None
 
     print('dbg: device_map', cfg.device_map)
-    cfg.device_map = None
+    cfg.device_map = {"23GiB": 0, "23GiB": 1, "23GiB": 2}
 
 
 def normalize_config(cfg):
