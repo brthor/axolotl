@@ -41,8 +41,8 @@ def choose_device(cfg):
         print('dbg: use accelerate')
         cfg.device_map = None
 
-    print('dbg: device_map', cfg.device_map)
     cfg.device_map = {"23GiB": 0, "23GiB": 1, "23GiB": 2}
+    print('dbg: device_map', cfg.device_map)
 
 
 def normalize_config(cfg):
