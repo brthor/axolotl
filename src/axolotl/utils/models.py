@@ -434,6 +434,9 @@ def load_model(
 
         print('dbg: set model parallel')
 
+    else:
+        print('dbg: no model parallel')
+
     requires_grad = []
     for name, param in model.named_parameters(recurse=True):
         if param.requires_grad:
