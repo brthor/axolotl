@@ -38,7 +38,10 @@ def choose_device(cfg):
     # accelerate figure out which parts of the model to put on which gpu
     accelerate_vars = [var for var in os.environ if var.startswith("ACCELERATE_USE_")]
     if accelerate_vars:
+        print('dbg: use accelerate')
         cfg.device_map = None
+
+    print('dbg: device_map', cfg.device_map)
 
 
 def normalize_config(cfg):
