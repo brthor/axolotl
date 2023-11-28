@@ -249,6 +249,8 @@ def load_model(
                 load_in_4bit=cfg.load_in_4bit and cfg.adapter is not None,
                 **model_kwargs,
             )
+            print(model.device_map)
+            print(model.hf_device_map)
 
             if cfg.flash_attention and not inference:
                 from axolotl.monkeypatch.llama_attn_hijack_flash import (
