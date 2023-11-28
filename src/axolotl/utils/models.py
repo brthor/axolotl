@@ -207,6 +207,8 @@ def load_model(
     model_kwargs["max_memory"] = cfg.max_memory
     model_kwargs["torch_dtype"] = cfg.torch_dtype
 
+    print('kwargs', model_kwargs)
+
     if cfg.model_revision:
         model_kwargs["revision"] = cfg.model_revision
     if cfg.gptq:
